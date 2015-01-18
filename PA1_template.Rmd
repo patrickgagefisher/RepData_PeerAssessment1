@@ -10,7 +10,7 @@ This R Markdown document will examine the activity.csv file provided for Peer As
 First make sure that the ggplot2 package is installed.Then we will read in the activity file.
 
 
-```{r echo=TRUE}
+```{r, echo=TRUE}
 install.packages("ggplot2", repos='http://cran.us.r-project.org')
 table.data <- read.csv("activity.csv", header = TRUE)
 library(ggplot2)
@@ -19,7 +19,7 @@ library(ggplot2)
 Then we can begin addressing question 1. First we will delete all rows with NA values in the 'steps' column.
 
 
-```{r}
+```{r, echo=TRUE}
 table.new <- na.omit(table.data)
 ```
 
@@ -27,7 +27,7 @@ table.new <- na.omit(table.data)
 Subset data by date for our histogram
 
 
-```{r}
+```{r, echo=TRUE}
 table.agg <- aggregate(.~date, data = table.new, FUN = sum)
 ```
 
@@ -35,7 +35,7 @@ table.agg <- aggregate(.~date, data = table.new, FUN = sum)
 Then we will subset only the columns that we need.
 
 
-```{r}
+```{r, echo=TRUE}
 table.hist <- c("date", "steps")
 table.hist.set <- subset(table.agg[table.hist],)
 ```
@@ -43,11 +43,11 @@ table.hist.set <- subset(table.agg[table.hist],)
 Calculate the mean and median of the steps
 
 
-```{r}
+```{r, echo=TRUE}
 table.mean <- mean(as.numeric(table.hist.set$steps))
 table.mean
 ```
-```{r}
+```{r, echo=TRUE}
 table.median <- median(as.numeric(table.hist.set$steps))
 table.median
 ```
@@ -56,7 +56,7 @@ table.median
 Print a histogram of the total steps by date
 
 
-```{r, echo=FALSE}
+```{r, echo=TRUE}
 hist(table.hist.set$steps, main = "Histogram of Total Steps by Date", xlab = "Step Totals")
 
 ```
@@ -66,7 +66,7 @@ Question 2
 
 Returning to our original table, we subset the columns that we need.
 
-```{r}
+```{r, echo=TRUE}
 table.steps <- c("interval", "steps")
 table.steps.set <- subset(table.new[table.steps],)
 ```
@@ -75,7 +75,7 @@ table.steps.set <- subset(table.new[table.steps],)
 Calculate the mean of total
 
 
-```{r}
+```{r, echo=TRUE}
 steps.mean <- aggregate(steps ~ interval, table.steps.set, mean)
 ```
 
@@ -83,7 +83,7 @@ steps.mean <- aggregate(steps ~ interval, table.steps.set, mean)
 Print a line chart showing the average steps per interval across dates
 
 
-```{r}
+```{r, echo=TRUE}
 steps.plot <- ggplot(steps.mean, aes(x = interval, y = steps))
 steps.plot <- steps.plot + geom_line()
 print(steps.plot)
@@ -95,7 +95,7 @@ Question 3
 Returning to our original values, we count the number of NA values
 
 
-```{r}
+```{r, echo=TRUE}
 count.na <- sum(is.na(table.data$steps))
 count.na
 ```
@@ -104,7 +104,7 @@ count.na
 Replace NA with the total mean from question 1
 
 
-```{r}
+```{r, echo=TRUE}
 table.data[is.na(table.data)] <- 10766
 ```
 
@@ -112,7 +112,7 @@ table.data[is.na(table.data)] <- 10766
 Subset data by date for histogram
 
 
-```{r}
+```{r, echo=TRUE}
 data.agg <- aggregate(.~date, data = table.data, FUN = sum)
 ```
 
@@ -120,7 +120,7 @@ data.agg <- aggregate(.~date, data = table.data, FUN = sum)
 Subset the columns you need
 
 
-```{r}
+```{r, echo=TRUE}
 data.hist <- c("date", "steps")
 data.hist.set <- subset(data.agg[data.hist],)
 ```
@@ -129,7 +129,7 @@ data.hist.set <- subset(data.agg[data.hist],)
 Calculate the mean and median of the total
 
 
-```{r}
+```{r, echo=TRUE}
 data.mean <- mean(as.numeric(data.hist.set$steps))
 data.mean
 
@@ -141,7 +141,7 @@ data.median
 Print histogram
 
 
-```{r}
+```{r, echo=TRUE}
 hist(data.hist.set$steps, main = "Histogram of Total Steps by Date", xlab = "Step Totals")
 ```
 
@@ -151,7 +151,7 @@ Question 4
 Add a column for day of the week and calculate its value based on date
 
 
-```{r}
+```{r, echo=TRUE}
 table.data$day <- weekdays(as.Date(table.data$date))
 table.weekday <- table.data[with(table.data, day == "Monday" | day == "Tuesday" | day == "Wednesday" | day == "Thursday" | day == "Friday"),]
 ```
@@ -160,7 +160,7 @@ table.weekday <- table.data[with(table.data, day == "Monday" | day == "Tuesday" 
 Calculate mean of total
 
 
-```{r}
+```{r, echo=TRUE}
 weekday.mean <- mean(as.numeric(table.weekday$steps))
 ```
 
@@ -168,7 +168,7 @@ weekday.mean <- mean(as.numeric(table.weekday$steps))
 Subset the columns you need
 
 
-```{r}
+```{r, echo=TRUE}
 weekday.steps <- c("interval", "steps")
 weekday.steps.set <- subset(table.weekday[weekday.steps],)
 ```
@@ -177,7 +177,7 @@ weekday.steps.set <- subset(table.weekday[weekday.steps],)
 Print line chart
 
 
-```{r}
+```{r, echo=TRUE}
 weekday.steps.mean <- aggregate(steps ~ interval, weekday.steps.set, mean)
 weekday.plot <- ggplot(weekday.steps.mean, aes(x = interval, y = steps))
 weekday.plot + geom_line()
